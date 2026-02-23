@@ -3,11 +3,11 @@ import { useState } from 'react';
 const emptyMaterial = () => ({
   id: Date.now().toString() + Math.random(),
   description: '',
-  qty: 1,
-  costPrice: 0,
-  length: 0,
-  width: 0,
-  height: 0,
+  qty: '',
+  costPrice: '',
+  length: '',
+  width: '',
+  height: '',
   compressVolume: '',
 });
 
