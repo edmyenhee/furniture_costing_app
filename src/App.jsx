@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '16px', fontFamily: 'sans-serif' }}>
-      <h1 style={{ fontSize: 22, marginBottom: 12 }}>家具成本計算 RFQ</h1>
+      <h1 style={{ fontSize: 22, marginBottom: 12 }}>產品成本計算</h1>
       <div style={{ marginBottom: 12 }}>
         <label style={{ fontWeight: 600 }}>RFQ 名稱：</label>
         <input
