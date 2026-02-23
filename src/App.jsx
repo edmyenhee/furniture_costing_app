@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import GlobalParams from './components/GlobalParams';
 import ItemList from './components/ItemList';
 
-const DEFAULT_PARAMS = { rmPerM3: 420, minMultiplier: 2.2, maxMultiplier: 2.4 };
+const DEFAULT_PARAMS = { rmPerM3: 420, minMultiplier: 2.2, maxMultiplier: 2.4, currency: 'MYR', usdToMyr: 4.5 };
 
 function loadState() {
   try {

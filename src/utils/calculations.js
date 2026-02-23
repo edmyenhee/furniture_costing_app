@@ -25,7 +25,7 @@ export function calcMaxPrice(costPrice, logPerUnit, maxMultiplier) {
   return (costPrice + logPerUnit) * maxMultiplier;
 }
 
-export function calcItemTotals(item, rmPerM3, minMultiplier, maxMultiplier) {
+export function calcItemTotals(item, rmPerM3, minMultiplier, maxMultiplier, currency = 'MYR', usdToMyr = 4.5) {
   return item.materials.map(mat => {
     const vol = calcVolumePerUnit(Number(mat.length), Number(mat.width), Number(mat.height));
     const logPerUnit = calcLogisticPerUnit(vol, rmPerM3);
@@ -34,7 +34,7 @@ export function calcItemTotals(item, rmPerM3, minMultiplier, maxMultiplier) {
     const cost = Number(mat.costPrice);
     const minPrice = calcMinPrice(cost, logPerUnit, minMultiplier);
     const maxPrice = calcMaxPrice(cost, logPerUnit, maxMultiplier);
-    return {
+    const result = {
       ...mat,
       volPerUnit: vol,
       logPerUnit,
@@ -45,5 +45,12 @@ export function calcItemTotals(item, rmPerM3, minMultiplier, maxMultiplier) {
       totalMinPrice: minPrice * Number(mat.qty),
       totalMaxPrice: maxPrice * Number(mat.qty),
     };
+    if (currency === 'USD') {
+      result.minPricePerUnitMyr = minPrice * usdToMyr;
+      result.maxPricePerUnitMyr = maxPrice * usdToMyr;
+      result.totalMinPriceMyr = result.totalMinPrice * usdToMyr;
+      result.totalMaxPriceMyr = result.totalMaxPrice * usdToMyr;
+    }
+    return result;
   });
 }

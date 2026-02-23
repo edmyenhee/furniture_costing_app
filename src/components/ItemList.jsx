@@ -23,7 +23,7 @@ export default function ItemList({ items, setItems, params }) {
 
   const computedItems = items.map(item => ({
     ...item,
-    computedMaterials: calcItemTotals(item, params.rmPerM3, params.minMultiplier, params.maxMultiplier),
+    computedMaterials: calcItemTotals(item, params.rmPerM3, params.minMultiplier, params.maxMultiplier, params.currency, params.usdToMyr),
   }));
 
   return (
@@ -36,7 +36,7 @@ export default function ItemList({ items, setItems, params }) {
       </div>
 
       {showForm && (
-        <ItemForm onSave={addItem} onCancel={() => setShowForm(false)} />
+        <ItemForm onSave={addItem} onCancel={() => setShowForm(false)} currency={params.currency} />
       )}
 
       {computedItems.map((item, idx) => (
@@ -50,10 +50,10 @@ export default function ItemList({ items, setItems, params }) {
           </div>
           {editingId === item.id ? (
             <div style={{ padding: 12 }}>
-              <ItemForm initialData={item} onSave={updateItem} onCancel={() => setEditingId(null)} />
+              <ItemForm initialData={item} onSave={updateItem} onCancel={() => setEditingId(null)} currency={params.currency} />
             </div>
           ) : (
-            <SummaryTable computedItem={item} />
+            <SummaryTable computedItem={item} currency={params.currency} />
           )}
         </div>
       ))}

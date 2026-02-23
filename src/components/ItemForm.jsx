@@ -11,7 +11,7 @@ const emptyMaterial = () => ({
   compressVolume: '',
 });
 
-export default function ItemForm({ initialData, onSave, onCancel }) {
+export default function ItemForm({ initialData, onSave, onCancel, currency = 'MYR' }) {
   const [name, setName] = useState(initialData?.name || '');
   const [materials, setMaterials] = useState(
     initialData?.materials?.length ? initialData.materials : [emptyMaterial()]
@@ -43,7 +43,7 @@ export default function ItemForm({ initialData, onSave, onCancel }) {
           <tr>
             <th style={thStyle}>物料描述</th>
             <th style={thStyle}>數量</th>
-            <th style={thStyle}>成本 (MYR)</th>
+            <th style={thStyle}>成本 ({currency})</th>
             <th style={thStyle}>長 (m)</th>
             <th style={thStyle}>寬 (m)</th>
             <th style={thStyle}>高 (m)</th>
