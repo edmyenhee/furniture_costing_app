@@ -7,6 +7,24 @@ import { supabase } from './lib/supabase';
 
 const DEFAULT_PARAMS = { rmPerM3: 420, minMultiplier: 2.2, maxMultiplier: 2.4, currency: 'MYR', usdToMyr: 4.5 };
 
+// Supabase 在連結失效時會導回 #error=...&error_code=...，但 auth-js 會把這個錯誤吞掉、
+// 不發出任何 onAuthStateChange 事件，所以只能自己讀 URL。錯誤路徑不會清除 hash，讀完由我們自己清。
+function takeUrlAuthError() {
+  const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  if (!params.get('error') && !params.get('error_code')) return '';
+
+  window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search);
+
+  if (params.get('error_code') === 'otp_expired') {
+    return '重設密碼連結已失效（有效期限 1 小時），請重新申請。';
+  }
+  return params.get('error_description') || '這個連結無效，請重新申請。';
+}
+
+// 在 module 載入時就取走，每次頁面載入只執行一次。
+// 不能放在 useState 初始化函式裡：StrictMode 會呼叫兩次，第二次會拿到已被清空的 hash。
+const URL_AUTH_ERROR = takeUrlAuthError();
+
 function loadState() {
   try {
     const s = localStorage.getItem('fcapp');
@@ -29,7 +47,7 @@ export default function App() {
 
   if (session === undefined) return null; // loading
   if (isResettingPassword) return <ResetPasswordPage onDone={() => setIsResettingPassword(false)} />;
-  if (!session) return <LoginPage />;
+  if (!session) return <LoginPage initialError={URL_AUTH_ERROR} />;
 
   return <AppContent />;
 }
